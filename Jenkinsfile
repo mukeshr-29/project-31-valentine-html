@@ -50,7 +50,7 @@ pipeline{
         }
         stage('trivy img scan'){
             steps{
-                sh 'trivy image --formate json -o trivyimg-report.json mukeshr29/valentinepro'
+                sh 'trivy image --format json -o trivyimg-report.json mukeshr29/valentinepro'
             }
         }
         stage('docker img push to hub'){
@@ -60,6 +60,11 @@ pipeline{
                         sh 'docker push mukeshr29/valentinepro'
                     }
                 }
+            }
+        }
+        stage('deploy to container'){
+            steps{
+                sh 'docker run -d -p 80:80 mukeshr29/valentinepro'
             }
         }
     }
